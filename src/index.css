@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Oura / Apple Fitness+ dark theme */
+    --background: 0 0% 4%;           /* #0A0A0A near-black */
+    --foreground: 0 0% 94%;          /* #F0F0F0 off-white */
+
+    --card: 0 0% 8%;                 /* #141414 */
+    --card-foreground: 0 0% 94%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 94%;
+
+    --primary: 84 100% 59%;          /* #ADFF2F electric lime */
+    --primary-foreground: 0 0% 0%;   /* black text on lime */
+
+    --secondary: 0 0% 12%;           /* #1F1F1F */
+    --secondary-foreground: 0 0% 94%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 54%;    /* #8A8A8A */
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 94%;
+
+    --destructive: 0 68% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 16%;              /* #292929 subtle separator */
+    --input: 0 0% 12%;
+    --ring: 84 100% 59%;
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Clash Display', system-ui, sans-serif;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+/* Hide scrollbar for horizontal scroll containers */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Supabase Auth UI overrides */
+.supabase-auth-ui_ui-container { color: hsl(var(--foreground)) !important; }
