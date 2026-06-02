@@ -258,28 +258,47 @@ function WorkoutForm({ selectedType, onAdd }) {
           </div>
         </div>
 
-        {/* Load toggle */}
-        <div className="flex gap-2">
-          {[
-            { label: 'Rehab Safe', val: true, icon: SealCheck },
-            { label: 'Full Load', val: false, icon: Barbell },
-          ].map(({ label, val, icon: Icon }) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => setRehabSafe(val)}
-              className={`flex-1 py-2.5 rounded-full text-xs font-semibold border transition-all flex items-center justify-center gap-1.5 ${
-                rehabSafe === val
-                  ? val
-                    ? 'bg-primary text-primary-foreground border-transparent shadow-[0_0_14px_rgba(173,255,47,0.25)]'
-                    : 'bg-primary text-primary-foreground border-transparent shadow-[0_0_14px_rgba(173,255,47,0.25)]'
-                  : 'border-border text-muted-foreground bg-secondary hover:border-primary/30'
-              }`}
+        {/* Rehab Safe slider toggle */}
+        <div>
+          <label className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2 block font-semibold">
+            Load Type
+          </label>
+          <button
+            type="button"
+            onClick={() => setRehabSafe(v => !v)}
+            className="w-full flex items-center justify-between rounded-2xl bg-secondary border border-border px-4 py-3 transition-all hover:border-primary/30"
+          >
+            <div className="flex items-center gap-2.5">
+              <motion.div
+                animate={{ rotate: rehabSafe ? 0 : 15 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                {rehabSafe
+                  ? <SealCheck size={16} weight="fill" className="text-sky-400" />
+                  : <Barbell size={16} weight="fill" className="text-primary" />
+                }
+              </motion.div>
+              <div className="text-left">
+                <p className="text-xs font-semibold text-foreground">
+                  {rehabSafe ? 'Rehab Safe' : 'Full Load'}
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  {rehabSafe ? 'Light / therapeutic movement' : 'Working at full intensity'}
+                </p>
+              </div>
+            </div>
+            {/* Pill slider track */}
+            <div
+              className="relative h-6 w-11 rounded-full transition-colors shrink-0"
+              style={{ background: rehabSafe ? '#38bdf8' : '#ADFF2F' }}
             >
-              <Icon size={12} weight={rehabSafe === val ? 'fill' : 'regular'} />
-              {label}
-            </button>
-          ))}
+              <motion.div
+                className="absolute top-0.5 h-5 w-5 rounded-full bg-black shadow"
+                animate={{ left: rehabSafe ? 2 : 22 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              />
+            </div>
+          </button>
         </div>
 
         {/* Notes */}
