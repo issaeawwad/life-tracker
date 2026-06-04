@@ -2,8 +2,13 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import crypto from 'crypto'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -15,7 +20,9 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
-app.use(cors({ origin: 'http://localhost:5173' }))
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || (process.env.NODE_ENV === 'production' ? false : 'http://localhost:5173'),
+}))
 app.use(express.json())
 
 // Middleware: verify Supabase JWT
@@ -244,7 +251,7 @@ app.get('/api/oura/callback', async (req, res) => {
     { onConflict: 'user_id' }
   )
 
-  res.redirect('http://localhost:5173/?oura=connected')
+  res.redirect((process.env.APP_URL || 'http://localhost:5173') + '/?oura=connected')
 })
 
 // Connection status
@@ -350,6 +357,14 @@ app.post('/api/grocery-list', requireAuth, async (req, res) => {
 
   res.json({ groceryList: response.content[0].text })
 })
+
+// Serve Vite build in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(join(__dirname, '../dist')))
+  app.get('*', (_req, res) => {
+    res.sendFile(join(__dirname, '../dist', 'index.html'))
+  })
+}
 
 app.listen(PORT, () => {
   console.log(`Life Tracker API running on http://localhost:${PORT}`)

@@ -282,7 +282,7 @@ export default function Meals() {
         calories: m.calories,
         protein_g: m.protein_g,
       }))
-      const res = await fetch('http://localhost:3001/api/grocery-list', {
+      const res = await fetch('/api/grocery-list', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ meals: payload }),
